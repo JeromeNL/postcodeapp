@@ -1,7 +1,5 @@
-import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:store_redirect/store_redirect.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -31,11 +29,12 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   final InAppReview inAppReview = InAppReview.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Adres Checker'),
+        title: const Text('Adres Checker'),
         centerTitle: true,
         backgroundColor: Colors.grey[900],
       ),
@@ -63,31 +62,30 @@ class _FirstScreenState extends State<FirstScreen> {
             ),
             // Share PlayStore link to a friend by 'share popup'
             ListTile(
-              leading: Icon(Icons.share),
+              leading: const Icon(Icons.share),
               title: const Text('Deel deze app'),
-              onTap: ()  {
-                Share.share('Ik gebruik deze geweldige app: https://www.joramkwetters.nl/');
+              onTap: () {
+                Share.share(
+                    'Ik gebruik deze geweldige app: https://www.joramkwetters.nl/');
               },
             ),
             // User goes to PlayStore, where he can leave a review.
             ListTile(
-              leading: Icon(Icons.reviews),
+              leading: const Icon(Icons.reviews),
               title: const Text('Beoordeel ons'),
               onTap: () async {
                 try {
-                   {
+                  {
                     StoreRedirect.redirect(
                         androidAppId: "nl.rtl.videoland.v2",
                         iOSAppId: "585027354");
                   }
-                } catch (e) {
-                  print("ERROR!: $e");
-                }
+                } catch (e) {}
               },
             ),
             // User goes to personal website
             ListTile(
-              leading: Icon(Icons.info),
+              leading: const Icon(Icons.info),
               title: const Text('Meer info'),
               onTap: () async {
                 Uri url = Uri.parse("https://www.joramkwetters.nl");
@@ -107,7 +105,7 @@ class _FirstScreenState extends State<FirstScreen> {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+                padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
                 child: RichText(
                   text: TextSpan(
                     children: [
@@ -136,8 +134,64 @@ class _FirstScreenState extends State<FirstScreen> {
         ),
       ),
       body: Container(
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: Colors.grey[200],
+        ),
+        child: Column(
+          children: [
+            Divider(height: MediaQuery.of(context).size.height / 15),
+            Container(
+              height: (MediaQuery.of(context).size.height / 2.5),
+              width: (MediaQuery.of(context).size.width / 1.25),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Divider(height: MediaQuery.of(context).size.height / 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: (MediaQuery.of(context).size.height / 12),
+                  width: (MediaQuery.of(context).size.width / 2.5),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                VerticalDivider(width: MediaQuery.of(context).size.width / 15),
+                Container(
+                  height: (MediaQuery.of(context).size.height / 12),
+                  width: (MediaQuery.of(context).size.width / 4),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(height: 50),
+            TextButton(
+                child: const Text("Zoeken"),
+                onPressed: () {},
+                style: TextButton.styleFrom(
+                  textStyle: const TextStyle(fontSize: 25),
+                  backgroundColor: Colors.yellow,
+                  primary: Colors.pink,
+                  padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
+                )),
+          ],
         ),
       ),
     );
