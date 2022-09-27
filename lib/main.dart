@@ -1,4 +1,3 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:postcodeapp/postCodeAPI.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -6,7 +5,6 @@ import 'package:store_redirect/store_redirect.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:share_plus/share_plus.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -186,18 +184,19 @@ class _FirstScreenState extends State<FirstScreen> {
             ),
             const Divider(height: 50),
             TextButton(
-                child: const Text("Zoeken"),
-                onPressed: () async {
-                  postCodeAPI dataFromAPI = new postCodeAPI();
-                  dataFromAPI.getData();
-                },
-
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 25),
-                  backgroundColor: Colors.yellow,
-                  primary: Colors.pink,
-                  padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
-                )),
+              child: const Text("Zoeken"),
+              onPressed: () async {
+                postCodeAPI dataFromAPI = new postCodeAPI();
+                Map<String, String> APIData = await dataFromAPI.getData();
+                print(APIData.values.elementAt(1));
+              },
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 25),
+                backgroundColor: Colors.yellow,
+                primary: Colors.pink,
+                padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
+              ),
+            ),
           ],
         ),
       ),
