@@ -169,8 +169,10 @@ class _FirstScreenState extends State<FirstScreen> {
           ],
         ),
       ),
-      body: Container(
+      body: SingleChildScrollView(
+    child: Container(
         width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           color: Colors.grey[200],
         ),
@@ -241,26 +243,26 @@ class _FirstScreenState extends State<FirstScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: (MediaQuery.of(context).size.height / 12),
                   width: (MediaQuery.of(context).size.width / 2.5),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.black,
+                  child: TextField(
+                    style: TextStyle(fontSize: 25.0, height: 2.0, color: Colors.black),
+                    decoration: InputDecoration(
+                      hintText: "1234 AB"
+
                     ),
                   ),
                 ),
                 VerticalDivider(width: MediaQuery.of(context).size.width / 15),
-                Container(
+                SizedBox(
                   height: (MediaQuery.of(context).size.height / 12),
                   width: (MediaQuery.of(context).size.width / 4),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.black,
+                  child: TextField(
+                    style: TextStyle(fontSize: 25.0, height: 2.0, color: Colors.black),
+                    decoration: InputDecoration(
+                      hintText: '123',
+
                     ),
                   ),
                 ),
@@ -271,7 +273,6 @@ class _FirstScreenState extends State<FirstScreen> {
               child: const Text("Zoeken"),
               onPressed: () async {
                 APIData = await dataFromAPI.getData();
-                print(APIData.values.elementAt(1));
                 fillInCorrectData();
               },
               style: TextButton.styleFrom(
@@ -283,6 +284,7 @@ class _FirstScreenState extends State<FirstScreen> {
             ),
           ],
         ),
+      ),
       ),
     );
   }
