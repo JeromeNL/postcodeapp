@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:postcodeapp/postCodeAPI.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:store_redirect/store_redirect.dart';
@@ -51,6 +52,17 @@ class _FirstScreenState extends State<FirstScreen> {
       city = APIData.values.elementAt(0);
       municipality = APIData.values.elementAt(3);
       province = APIData.values.elementAt(4);
+    });
+  }
+
+  void copyAddress(){
+    String fullAddress = "Geen Adres Gevonden :(";
+    if(postCode != null){
+      fullAddress = street + ", " + number + " " + postCode + " " + city + " " + municipality + " " + province;
+    }
+
+    Clipboard.setData(ClipboardData(text: fullAddress)).then((_){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Het adres is naar jouw klembord gekopieerd!")));
     });
   }
 
@@ -186,20 +198,20 @@ class _FirstScreenState extends State<FirstScreen> {
                             primary: Colors.grey[900],
                           ),
                           onPressed: () {
-                            print("Kopieren!!!");
+                            copyAddress();
                           },
                         ),
                       ),
                     ],
                   ),
                   Text(
-                    postCode,
+                    street + ", " + number,
                     style: TextStyle(
                       fontSize: 25,
                     ),
                   ),
                   Text(
-                    street + " " + number,
+                    postCode,
                     style: TextStyle(
                       fontSize: 25,
                     ),
