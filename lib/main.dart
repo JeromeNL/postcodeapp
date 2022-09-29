@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/gestures.dart';
 import 'package:postcodeapp/postCodeAPI.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -30,6 +32,27 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   final InAppReview inAppReview = InAppReview.instance;
+
+  postCodeAPI dataFromAPI = postCodeAPI();
+  Map<String, String> APIData = Map();
+  String postCode = 'N/A';
+  String number = 'N/A';
+  String street = 'N/A';
+  String city = 'N/A';
+  String municipality = "N/A";
+  String province = 'N/A';
+
+
+  void fillInCorrectData() {
+    setState(() {
+      postCode = APIData.values.elementAt(5);
+      number = APIData.values.elementAt(1);
+      street = APIData.values.elementAt(2);
+      city = APIData.values.elementAt(0);
+      municipality = APIData.values.elementAt(3);
+      province = APIData.values.elementAt(4);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,19 +164,68 @@ class _FirstScreenState extends State<FirstScreen> {
         ),
         child: Column(
           children: [
-            Divider(height: MediaQuery.of(context).size.height / 15),
+            SizedBox(height: MediaQuery.of(context).size.height / 15),
             Container(
               height: (MediaQuery.of(context).size.height / 2.5),
               width: (MediaQuery.of(context).size.width / 1.25),
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: Colors.grey[400],
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.black,
-                ),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 5, 10, 5),
+                        child: TextButton.icon(
+                          label: Text("Kopieren"),
+                          icon: Icon(Icons.copy),
+                          style: TextButton.styleFrom(
+                            primary: Colors.grey[900],
+                          ),
+                          onPressed: () {
+                            print("Kopieren!!!");
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    postCode,
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                  Text(
+                    street + " " + number,
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                  Text(
+                    city,
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                  Text(
+                    municipality,
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                  Text(
+                    province,
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                ],
               ),
             ),
-            Divider(height: MediaQuery.of(context).size.height / 15),
+            SizedBox(height: MediaQuery.of(context).size.height / 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -182,19 +254,19 @@ class _FirstScreenState extends State<FirstScreen> {
                 ),
               ],
             ),
-            const Divider(height: 50),
+            const SizedBox(height: 50),
             TextButton(
               child: const Text("Zoeken"),
               onPressed: () async {
-                postCodeAPI dataFromAPI = new postCodeAPI();
-                Map<String, String> APIData = await dataFromAPI.getData();
+                APIData = await dataFromAPI.getData();
                 print(APIData.values.elementAt(1));
+                fillInCorrectData();
               },
               style: TextButton.styleFrom(
                 textStyle: const TextStyle(fontSize: 25),
                 backgroundColor: Colors.yellow,
                 primary: Colors.pink,
-                padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
+                padding: const EdgeInsets.fromLTRB(25, 15, 25, 15),
               ),
             ),
           ],
