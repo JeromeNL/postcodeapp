@@ -5,14 +5,14 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class postCodeAPI {
-  Future<Map<String, String>> getData() async {
+  Future<Map<String, String>> getData(String postCode, String number) async {
     {
       Map<String, String> addressData = HashMap();
       var token = '5d1bbc5f-2e53-407a-9a5b-d1bbe8e5df38';
       var url = Uri.https(
         'postcode.tech',
         'api/v1/postcode/full',
-        {'postcode': '4174HG', 'number': '3'},
+        {'postcode': '$postCode', 'number': '$number'},
       );
       print(url);
 
@@ -35,6 +35,7 @@ class postCodeAPI {
         addressData['province'] = jsonResponse['province'];
       } else {
         print('Request failed with status: ${response.statusCode}.');
+        return addressData;
       }
       return addressData;
     }

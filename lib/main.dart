@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: FirstScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -36,22 +37,59 @@ class _FirstScreenState extends State<FirstScreen> {
 
   postCodeAPI dataFromAPI = postCodeAPI();
   Map<String, String> APIData = Map();
-  String postCode = 'N/A';
-  String number = 'N/A';
-  String street = 'N/A';
-  String city = 'N/A';
-  String municipality = "N/A";
-  String province = 'N/A';
+  String postCode = '';
+  String number = '';
+  String street = '';
+  String city = '';
+  String municipality = "";
+  String province = '';
+
+  String givenPostcode = "N/A";
+  String givenNumber = "N/A";
+
+  final postcodeController = TextEditingController();
+  final numberController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    postcodeController.dispose();
+    numberController.dispose();
+    super.dispose();
+  }
+
+
+
 
 
   void fillInCorrectData() {
     setState(() {
       postCode = APIData.values.elementAt(5);
       number = APIData.values.elementAt(1);
-      street = APIData.values.elementAt(2);
+      street = APIData.values.elementAt(2) + ", ";
       city = APIData.values.elementAt(0);
       municipality = APIData.values.elementAt(3);
       province = APIData.values.elementAt(4);
+    });
+  }
+
+  void clearAllDataFromView(){
+    String postCode = '';
+    String number = '';
+    String street = '';
+    String city = '';
+    String municipality = "";
+    String province = '';
+  }
+
+  void givenDataNotCorrect(){
+    setState(() {
+       postCode = 'Postcode bestaat niet!';
+       number = '';
+       street = '';
+       city = '';
+       municipality = "";
+       province = '';
     });
   }
 
@@ -174,7 +212,7 @@ class _FirstScreenState extends State<FirstScreen> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: Colors.grey[100],
         ),
         child: Column(
           children: [
@@ -183,7 +221,7 @@ class _FirstScreenState extends State<FirstScreen> {
               height: (MediaQuery.of(context).size.height / 2.5),
               width: (MediaQuery.of(context).size.width / 1.25),
               decoration: BoxDecoration(
-                color: Colors.grey[400],
+                color: Colors.grey[500],
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -197,7 +235,7 @@ class _FirstScreenState extends State<FirstScreen> {
                           label: Text("Kopieren"),
                           icon: Icon(Icons.copy),
                           style: TextButton.styleFrom(
-                            primary: Colors.grey[900],
+                            primary: Colors.black,
                           ),
                           onPressed: () {
                             copyAddress();
@@ -207,7 +245,8 @@ class _FirstScreenState extends State<FirstScreen> {
                     ],
                   ),
                   Text(
-                    street + ", " + number,
+
+                    street + number,
                     style: TextStyle(
                       fontSize: 25,
                     ),
@@ -247,10 +286,10 @@ class _FirstScreenState extends State<FirstScreen> {
                   height: (MediaQuery.of(context).size.height / 12),
                   width: (MediaQuery.of(context).size.width / 2.5),
                   child: TextField(
+                    controller: postcodeController,
                     style: TextStyle(fontSize: 25.0, height: 2.0, color: Colors.black),
                     decoration: InputDecoration(
-                      hintText: "1234 AB"
-
+                      hintText: "1234AB",
                     ),
                   ),
                 ),
@@ -259,10 +298,10 @@ class _FirstScreenState extends State<FirstScreen> {
                   height: (MediaQuery.of(context).size.height / 12),
                   width: (MediaQuery.of(context).size.width / 4),
                   child: TextField(
+                    controller: numberController,
                     style: TextStyle(fontSize: 25.0, height: 2.0, color: Colors.black),
                     decoration: InputDecoration(
-                      hintText: '123',
-
+                      hintText: "123",
                     ),
                   ),
                 ),
@@ -272,13 +311,19 @@ class _FirstScreenState extends State<FirstScreen> {
             TextButton(
               child: const Text("Zoeken"),
               onPressed: () async {
-                APIData = await dataFromAPI.getData();
-                fillInCorrectData();
+                  // data versturen van view naar model
+                  APIData = await dataFromAPI.getData(
+                      postcodeController.text, numberController.text);
+                  if(APIData.isEmpty){
+                    givenDataNotCorrect();
+                  } else{
+                    fillInCorrectData();
+                  }
               },
               style: TextButton.styleFrom(
                 textStyle: const TextStyle(fontSize: 25),
-                backgroundColor: Colors.yellow,
-                primary: Colors.pink,
+                backgroundColor: Colors.grey[800],
+                primary: Colors.white,
                 padding: const EdgeInsets.fromLTRB(25, 15, 25, 15),
               ),
             ),
