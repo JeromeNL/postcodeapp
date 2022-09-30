@@ -14,7 +14,7 @@ class postCodeAPI {
         'api/v1/postcode/full',
         {'postcode': '$postCode', 'number': '$number'},
       );
-      print(url);
+
 
       // Await the http get response, then decode the json-formatted response.
       var response = await http.get(

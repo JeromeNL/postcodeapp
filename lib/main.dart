@@ -58,10 +58,6 @@ class _FirstScreenState extends State<FirstScreen> {
     super.dispose();
   }
 
-
-
-
-
   void fillInCorrectData() {
     setState(() {
       postCode = APIData.values.elementAt(5);
@@ -73,34 +69,49 @@ class _FirstScreenState extends State<FirstScreen> {
     });
   }
 
-  void clearAllDataFromView(){
-    String postCode = '';
-    String number = '';
-    String street = '';
-    String city = '';
-    String municipality = "";
-    String province = '';
-  }
-
-  void givenDataNotCorrect(){
+  void clearAllDataFromView() {
     setState(() {
-       postCode = 'Postcode bestaat niet!';
-       number = '';
-       street = '';
-       city = '';
-       municipality = "";
-       province = '';
+      postCode = '';
+      number = '';
+      street = '';
+      city = '';
+      municipality = "";
+      province = '';
+      postcodeController.clear();
+      numberController.clear();
     });
   }
 
-  void copyAddress(){
+  void givenDataNotCorrect() {
+    setState(() {
+      postCode = 'Postcode bestaat niet!';
+      number = '';
+      street = '';
+      city = '';
+      municipality = "";
+      province = '';
+    });
+  }
+
+  void copyAddress() {
     String fullAddress = "Geen Adres Gevonden :(";
-    if(postCode != null){
-      fullAddress = street + ", " + number + " " + postCode + " " + city + " " + municipality + " " + province;
+    if (postCode != null) {
+      fullAddress = street +
+          ", " +
+          number +
+          " " +
+          postCode +
+          " " +
+          city +
+          " " +
+          municipality +
+          " " +
+          province;
     }
 
-    Clipboard.setData(ClipboardData(text: fullAddress)).then((_){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Het adres is naar jouw klembord gekopieerd!")));
+    Clipboard.setData(ClipboardData(text: fullAddress)).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Het adres is naar jouw klembord gekopieerd!")));
     });
   }
 
@@ -208,128 +219,149 @@ class _FirstScreenState extends State<FirstScreen> {
         ),
       ),
       body: SingleChildScrollView(
-    child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-        ),
-        child: Column(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height / 15),
-            Container(
-              height: (MediaQuery.of(context).size.height / 2.5),
-              width: (MediaQuery.of(context).size.width / 1.25),
-              decoration: BoxDecoration(
-                color: Colors.grey[500],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 10, 5),
-                        child: TextButton.icon(
-                          label: Text("Kopieren"),
-                          icon: Icon(Icons.copy),
-                          style: TextButton.styleFrom(
-                            primary: Colors.black,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+          ),
+          child: Column(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height / 15),
+              Container(
+                height: (MediaQuery.of(context).size.height / 2.5),
+                width: (MediaQuery.of(context).size.width / 1.25),
+                decoration: BoxDecoration(
+                  color: Colors.grey[500],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 5, 10, 5),
+                          child: TextButton.icon(
+                            label: Text("Kopieren"),
+                            icon: Icon(Icons.copy),
+                            style: TextButton.styleFrom(
+                              primary: Colors.black,
+                            ),
+                            onPressed: () {
+                              copyAddress();
+                            },
                           ),
-                          onPressed: () {
-                            copyAddress();
-                          },
                         ),
+                      ],
+                    ),
+                    Text(
+                      street + number,
+                      style: TextStyle(
+                        fontSize: 25,
                       ),
-                    ],
-                  ),
-                  Text(
-
-                    street + number,
-                    style: TextStyle(
-                      fontSize: 25,
+                    ),
+                    Text(
+                      postCode,
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    Text(
+                      city,
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    Text(
+                      municipality,
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    Text(
+                      province,
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height / 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: (MediaQuery.of(context).size.height / 12),
+                    width: (MediaQuery.of(context).size.width / 2.5),
+                    child: TextField(
+                      controller: postcodeController,
+                      style: TextStyle(
+                          fontSize: 25.0, height: 2.0, color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: "1234AB",
+                      ),
                     ),
                   ),
-                  Text(
-                    postCode,
-                    style: TextStyle(
-                      fontSize: 25,
-                    ),
-                  ),
-                  Text(
-                    city,
-                    style: TextStyle(
-                      fontSize: 25,
-                    ),
-                  ),
-                  Text(
-                    municipality,
-                    style: TextStyle(
-                      fontSize: 25,
-                    ),
-                  ),
-                  Text(
-                    province,
-                    style: TextStyle(
-                      fontSize: 25,
+                  VerticalDivider(
+                      width: MediaQuery.of(context).size.width / 15),
+                  SizedBox(
+                    height: (MediaQuery.of(context).size.height / 12),
+                    width: (MediaQuery.of(context).size.width / 4),
+                    child: TextField(
+                      controller: numberController,
+                      style: TextStyle(
+                          fontSize: 25.0, height: 2.0, color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: "123",
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height / 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: (MediaQuery.of(context).size.height / 12),
-                  width: (MediaQuery.of(context).size.width / 2.5),
-                  child: TextField(
-                    controller: postcodeController,
-                    style: TextStyle(fontSize: 25.0, height: 2.0, color: Colors.black),
-                    decoration: InputDecoration(
-                      hintText: "1234AB",
+              const SizedBox(height: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    child: const Text("Wissen"),
+                    onPressed: () {
+                      clearAllDataFromView();
+                    },
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 25),
+                      backgroundColor: Colors.grey[800],
+                      primary: Colors.white,
+                      padding: const EdgeInsets.fromLTRB(25, 15, 25, 15),
                     ),
                   ),
-                ),
-                VerticalDivider(width: MediaQuery.of(context).size.width / 15),
-                SizedBox(
-                  height: (MediaQuery.of(context).size.height / 12),
-                  width: (MediaQuery.of(context).size.width / 4),
-                  child: TextField(
-                    controller: numberController,
-                    style: TextStyle(fontSize: 25.0, height: 2.0, color: Colors.black),
-                    decoration: InputDecoration(
-                      hintText: "123",
+                  VerticalDivider(
+                      width: MediaQuery.of(context).size.width / 15),
+                  TextButton(
+                    child: const Text("Zoeken"),
+                    onPressed: () async {
+                      // data versturen van view naar model
+                      APIData = await dataFromAPI.getData(
+                          postcodeController.text, numberController.text);
+                      if (APIData.isEmpty) {
+                        givenDataNotCorrect();
+                      } else {
+                        fillInCorrectData();
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 25),
+                      backgroundColor: Colors.grey[800],
+                      primary: Colors.white,
+                      padding: const EdgeInsets.fromLTRB(25, 15, 25, 15),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 50),
-            TextButton(
-              child: const Text("Zoeken"),
-              onPressed: () async {
-                  // data versturen van view naar model
-                  APIData = await dataFromAPI.getData(
-                      postcodeController.text, numberController.text);
-                  if(APIData.isEmpty){
-                    givenDataNotCorrect();
-                  } else{
-                    fillInCorrectData();
-                  }
-              },
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 25),
-                backgroundColor: Colors.grey[800],
-                primary: Colors.white,
-                padding: const EdgeInsets.fromLTRB(25, 15, 25, 15),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
