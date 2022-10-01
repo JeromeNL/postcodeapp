@@ -8,6 +8,21 @@ class postCodeAPI {
   Future<Map<String, String>> getData(String postCode, String number) async {
     {
       Map<String, String> addressData = HashMap();
+
+
+      final postCodeCheck = RegExp(r'^[1-9][0-9]{3} ?(?!sa|sd|ss)[A-Za-z]{2}$');
+      if(!postCodeCheck.hasMatch(postCode)){
+        print("postcode is fout!");
+        return addressData;
+      }
+
+      final numberCheck = RegExp(r'[0-9]+');
+      if(!numberCheck.hasMatch(postCode)){
+        print("huisnummer is fout!");
+        return addressData;
+      }
+
+
       var token = '5d1bbc5f-2e53-407a-9a5b-d1bbe8e5df38';
       var url = Uri.https(
         'postcode.tech',

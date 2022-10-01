@@ -95,7 +95,7 @@ class _FirstScreenState extends State<FirstScreen> {
 
   void copyAddress() {
     String fullAddress = "Geen Adres Gevonden :(";
-    if (postCode != null) {
+    if (postCode != "") {
       fullAddress = street +
           ", " +
           number +
@@ -107,12 +107,18 @@ class _FirstScreenState extends State<FirstScreen> {
           municipality +
           " " +
           province;
+
+      Clipboard.setData(ClipboardData(text: fullAddress)).then((_) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("Het adres is naar jouw klembord gekopieerd!")));
+      });
+    } else{
+      Clipboard.setData(ClipboardData(text: "")).then((_) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("Er valt geen adres te kopieren..")));
+      });
     }
 
-    Clipboard.setData(ClipboardData(text: fullAddress)).then((_) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Het adres is naar jouw klembord gekopieerd!")));
-    });
   }
 
   @override
@@ -310,6 +316,7 @@ class _FirstScreenState extends State<FirstScreen> {
                     height: (MediaQuery.of(context).size.height / 12),
                     width: (MediaQuery.of(context).size.width / 4),
                     child: TextField(
+                      keyboardType: TextInputType.number,
                       controller: numberController,
                       style: TextStyle(
                           fontSize: 25.0, height: 2.0, color: Colors.black),
@@ -324,15 +331,15 @@ class _FirstScreenState extends State<FirstScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextButton(
-                    child: const Text("Wissen"),
+                  TextButton.icon(
+                    label: Text("wissen"),
+                    icon: Icon(Icons.delete),
                     onPressed: () {
                       clearAllDataFromView();
                     },
                     style: TextButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 25),
-                      backgroundColor: Colors.grey[800],
-                      primary: Colors.white,
+                      textStyle: const TextStyle(fontSize: 20),
+                      primary: Colors.black,
                       padding: const EdgeInsets.fromLTRB(25, 15, 25, 15),
                     ),
                   ),
