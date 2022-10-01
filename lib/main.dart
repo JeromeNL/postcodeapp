@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:postcodeapp/postCodeAPI.dart';
@@ -36,7 +34,7 @@ class _FirstScreenState extends State<FirstScreen> {
   final InAppReview inAppReview = InAppReview.instance;
 
   postCodeAPI dataFromAPI = postCodeAPI();
-  Map<String, String> APIData = Map();
+  Map<String, String> apiData = Map();
   String postCode = '';
   String number = '';
   String street = '';
@@ -49,6 +47,7 @@ class _FirstScreenState extends State<FirstScreen> {
 
   final postcodeController = TextEditingController();
   final numberController = TextEditingController();
+  final double fontSizeText = 25;
 
   @override
   void dispose() {
@@ -60,12 +59,12 @@ class _FirstScreenState extends State<FirstScreen> {
 
   void fillInCorrectData() {
     setState(() {
-      postCode = APIData.values.elementAt(5);
-      number = APIData.values.elementAt(1);
-      street = APIData.values.elementAt(2) + ", ";
-      city = APIData.values.elementAt(0);
-      municipality = APIData.values.elementAt(3);
-      province = APIData.values.elementAt(4);
+      postCode = apiData.values.elementAt(5);
+      number = apiData.values.elementAt(1);
+      street = apiData.values.elementAt(2) + ", ";
+      city = apiData.values.elementAt(0);
+      municipality = apiData.values.elementAt(3);
+      province = apiData.values.elementAt(4);
     });
   }
 
@@ -109,12 +108,12 @@ class _FirstScreenState extends State<FirstScreen> {
           province;
 
       Clipboard.setData(ClipboardData(text: fullAddress)).then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Het adres is naar jouw klembord gekopieerd!")));
       });
     } else{
-      Clipboard.setData(ClipboardData(text: "")).then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      Clipboard.setData(const ClipboardData(text: "")).then((_) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Er valt geen adres te kopieren..")));
       });
     }
@@ -247,10 +246,10 @@ class _FirstScreenState extends State<FirstScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: EdgeInsets.fromLTRB(0, 5, 10, 5),
+                          padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
                           child: TextButton.icon(
-                            label: Text("Kopieren"),
-                            icon: Icon(Icons.copy),
+                            label: const Text("Kopieren"),
+                            icon: const Icon(Icons.copy),
                             style: TextButton.styleFrom(
                               primary: Colors.black,
                             ),
@@ -264,31 +263,31 @@ class _FirstScreenState extends State<FirstScreen> {
                     Text(
                       street + number,
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: fontSizeText,
                       ),
                     ),
                     Text(
                       postCode,
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: fontSizeText,
                       ),
                     ),
                     Text(
                       city,
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: fontSizeText,
                       ),
                     ),
                     Text(
                       municipality,
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: fontSizeText,
                       ),
                     ),
                     Text(
                       province,
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: fontSizeText,
                       ),
                     ),
                   ],
@@ -303,9 +302,9 @@ class _FirstScreenState extends State<FirstScreen> {
                     width: (MediaQuery.of(context).size.width / 2.5),
                     child: TextField(
                       controller: postcodeController,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 25.0, height: 2.0, color: Colors.black),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "1234AB",
                       ),
                     ),
@@ -318,9 +317,9 @@ class _FirstScreenState extends State<FirstScreen> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       controller: numberController,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 25.0, height: 2.0, color: Colors.black),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "123",
                       ),
                     ),
@@ -332,8 +331,8 @@ class _FirstScreenState extends State<FirstScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton.icon(
-                    label: Text("wissen"),
-                    icon: Icon(Icons.delete),
+                    label: const Text("wissen"),
+                    icon: const Icon(Icons.delete),
                     onPressed: () {
                       clearAllDataFromView();
                     },
@@ -348,10 +347,9 @@ class _FirstScreenState extends State<FirstScreen> {
                   TextButton(
                     child: const Text("Zoeken"),
                     onPressed: () async {
-                      // data versturen van view naar model
-                      APIData = await dataFromAPI.getData(
+                      apiData = await dataFromAPI.getData(
                           postcodeController.text, numberController.text);
-                      if (APIData.isEmpty) {
+                      if (apiData.isEmpty) {
                         givenDataNotCorrect();
                       } else {
                         fillInCorrectData();
