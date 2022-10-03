@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:postcodeapp/postCodeAPI.dart';
@@ -47,7 +49,8 @@ class _FirstScreenState extends State<FirstScreen> {
 
   final postcodeController = TextEditingController();
   final numberController = TextEditingController();
-  final double fontSizeText = 25;
+  final TextStyle textStyleDefault = TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20 );
+  final TextStyle textStyleData = TextStyle(color: Colors.grey[900], fontSize: 18 );
 
   @override
   void dispose() {
@@ -83,12 +86,12 @@ class _FirstScreenState extends State<FirstScreen> {
 
   void givenDataNotCorrect() {
     setState(() {
-      postCode = 'Postcode bestaat niet!';
+      postCode = 'Niet bekend';
       number = '';
-      street = '';
-      city = '';
-      municipality = "";
-      province = '';
+      street = 'Niet bekend';
+      city = 'Niet bekend';
+      municipality = 'Niet bekend';
+      province = 'Niet bekend';
     });
   }
 
@@ -111,13 +114,12 @@ class _FirstScreenState extends State<FirstScreen> {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Het adres is naar jouw klembord gekopieerd!")));
       });
-    } else{
+    } else {
       Clipboard.setData(const ClipboardData(text: "")).then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Er valt geen adres te kopieren..")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Er valt geen adres te kopieren..")));
       });
     }
-
   }
 
   @override
@@ -231,10 +233,11 @@ class _FirstScreenState extends State<FirstScreen> {
             color: Colors.grey[100],
           ),
           child: Column(
+
             children: [
               SizedBox(height: MediaQuery.of(context).size.height / 15),
               Container(
-                height: (MediaQuery.of(context).size.height / 2.5),
+                height: (MediaQuery.of(context).size.height / 2.25),
                 width: (MediaQuery.of(context).size.width / 1.25),
                 decoration: BoxDecoration(
                   color: Colors.grey[500],
@@ -260,34 +263,61 @@ class _FirstScreenState extends State<FirstScreen> {
                         ),
                       ],
                     ),
-                    Text(
-                      street + number,
-                      style: TextStyle(
-                        fontSize: fontSizeText,
-                      ),
-                    ),
-                    Text(
-                      postCode,
-                      style: TextStyle(
-                        fontSize: fontSizeText,
-                      ),
-                    ),
-                    Text(
-                      city,
-                      style: TextStyle(
-                        fontSize: fontSizeText,
-                      ),
-                    ),
-                    Text(
-                      municipality,
-                      style: TextStyle(
-                        fontSize: fontSizeText,
-                      ),
-                    ),
-                    Text(
-                      province,
-                      style: TextStyle(
-                        fontSize: fontSizeText,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        //color: Colors.green,
+                        child: Column(
+
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Straat",
+                              style: textStyleDefault,
+                            ),
+                            Text(
+                              street + number,
+                              style: textStyleData,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "Postcode",
+                              style: textStyleDefault,
+                            ),
+                            Text(
+                              postCode,
+                              style: textStyleData,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "Plaatsnaam",
+                              style: textStyleDefault,
+                            ),
+                            Text(
+                              city,
+                              style: textStyleData,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "Gemeente",
+                              style: textStyleDefault,
+                            ),
+                            Text(
+                              municipality,
+                              style: textStyleData,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "Provincie",
+                              style: textStyleDefault,
+                            ),
+                            Text(
+                              province,
+                              style: textStyleData,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
